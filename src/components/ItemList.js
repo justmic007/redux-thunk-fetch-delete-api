@@ -1,7 +1,7 @@
 import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { itemsFetchData } from '../actions/items';
+import { itemsFetchData, itemsRemoveItem } from '../actions/items';
 
 
 // https://medium.com/@stowball/a-dummys-guide-to-redux-and-thunk-in-react-d8904a7005d3
@@ -23,10 +23,17 @@ class ItemList extends Component {
 
         }
 
+        if(!this.props.items.length) {
+          return <p>No items to display</p>
+        }
+
         return (
           <ul>
-              {this.props.items.map((item) => (
-                <li key={item.id}>{item.label}</li>
+              {this.props.items.map((item, index) => (
+                <li key={item.id}>
+                {item.label}
+                <button onClick={() => this.props.removeItem(index)}>Remove</button>
+                </li>
               ))}
           </ul>
         );
@@ -36,6 +43,7 @@ class ItemList extends Component {
 ItemList.propTypes = {
   fetchData: PropTypes.func.isRequired,
   items: PropTypes.array.isRequired,
+  removeItem: PropTypes.func.isRequired,
   hasErrored: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired
 };
@@ -54,7 +62,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchData: (url) => dispatch(itemsFetchData(url)) // Here fetchData is a function that accepts a url parameter and returns dispatching itemsFetchData(url)
+    fetchData: (url) => dispatch(itemsFetchData(url)), // Here fetchData is a function that accepts a url parameter and returns dispatching itemsFetchData(url)
+    removeItem: (index) => dispatch(itemsRemoveItem(index))
   };
 };
 
