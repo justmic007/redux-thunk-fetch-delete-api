@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { itemsFetchData } from '../actions/items';
 
@@ -31,6 +32,13 @@ class ItemList extends Component {
         );
       }
 }
+
+ItemList.propTypes = {
+  fetchData: PropTypes.func.isRequired,
+  items: PropTypes.array.isRequired,
+  hasErrored: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool.isRequired
+};
 
 // A function that accepts state and then, returns an object of props
 const mapStateToProps = (state) => {
